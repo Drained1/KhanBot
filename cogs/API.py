@@ -104,7 +104,8 @@ class Khan(commands.Cog):
     async def user(self, ctx, user : str):
         if "/" in user:
             return await ctx.send('You cant break me nerd')
-        data = get_data(f"https://www.khanacademy.org/api/internal/user/profile?username={user}&format=pretty")
+        user = user.split("&")[0]
+        data = get_data(f"https://www.khanacademy.org/api/internal/user/profile?username={user}")
         try:
             await ctx.send(
                 embed = discord.Embed(
@@ -123,7 +124,9 @@ class Khan(commands.Cog):
         if "/" in user:
             return await ctx.send('You cant break me nerd')
 
-        toload = f"https://www.khanacademy.org/api/internal/user/scratchpads?username={user}&format=pretty&limit=30"
+        user = user.split("&")[0]
+
+        toload = f"https://www.khanacademy.org/api/internal/user/scratchpads?username={user}&limit=30"
 
         try:
             pronum = 1
@@ -184,7 +187,7 @@ class Khan(commands.Cog):
     @commands.command(aliases=['f'])
     @commands.cooldown(1, 10, BucketType.user)
     async def flags(self, ctx, program : int):
-        data = get_data(f"https://www.khanacademy.org/api/internal/scratchpads/{program}?format=pretty")
+        data = get_data(f"https://www.khanacademy.org/api/internal/scratchpads/{program}")
         try:
             if len(data["flags"]) < 1:
                 if data["hideFromHotlist"]:
